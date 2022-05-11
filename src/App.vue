@@ -6,7 +6,7 @@
 
 <script>
 import HomePage from '@/pages/HomePage.vue';
-import BaseLayout from './components/BaseLayout.vue';
+import BaseLayout from '@/components/Layout/BaseLayout.vue';
 
 export default {
   components: {
