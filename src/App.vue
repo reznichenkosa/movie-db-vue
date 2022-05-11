@@ -1,12 +1,17 @@
 <template>
-  <div class="">Hello</div>
+  <base-layout>
+    <home-page/>
+  </base-layout>
 </template>
 
-<style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+<script>
+import HomePage from '@/pages/HomePage.vue';
+import BaseLayout from './components/BaseLayout.vue';
 
-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-}
-</style>
+export default {
+  components: {
+    HomePage,
+    BaseLayout,
+  },
+};
+</script>
