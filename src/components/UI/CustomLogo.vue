@@ -1,5 +1,5 @@
 <template>
-  <a href="#" class="logo">TheseAre<span>Movie</span></a>
+  <a href="#" class="logo">TheseAre<span>Movies</span></a>
 </template>
 
 <script>
