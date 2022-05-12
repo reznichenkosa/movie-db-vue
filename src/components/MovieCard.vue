@@ -1,7 +1,7 @@
 <template>
   <div class="movie-card">
     <a href="#" class="wrapper">
-      <img src="/1.jpeg" alt="" />
+      <img src="https://upload.wikimedia.org/wikipedia/ru/1/16/Cruella_%282021%29_logo.jpg" alt="" />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="50"
@@ -76,7 +76,7 @@ export default {
   }
 
   &:hover .wrapper::before {
-    opacity: 1;
+    opacity: .5;
   }
 
   &:hover .favorite,
@@ -111,7 +111,7 @@ export default {
           rgba(0, 0, 0, 0.8) 75%,
           rgba(0, 0, 0, 0.9) 100%
         );
-        opacity: .5;
+        opacity: 0;
         transition: ease 0.5s;
         pointer-events: none;
       }

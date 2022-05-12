@@ -9,7 +9,7 @@
     </div>
   </section>
   <section class="all-movies">
-    <div class="container">
+    <div class="container wrapper">
       <filters-bar />
       <div class="movie-list">
         <movie-card />
@@ -23,6 +23,19 @@
         <movie-card />
         <movie-card />
       </div>
+      <more-button> Показать еще</more-button>
+    </div>
+  </section>
+  <section class="visited-movies">
+    <div class="container">
+      <h1>Вы смотрели</h1>
+      <div class="slider">
+        <swiper :slides-per-view="6" :space-between="50">
+        <swiper-slide v-for="i in 10" :key="i">
+          <movie-card />
+        </swiper-slide>
+      </swiper>
+      </div>
     </div>
   </section>
 </template>
@@ -34,6 +47,7 @@ import "swiper/css";
 import SliderCard from "@/components/SliderCard.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import MovieCard from "@/components/MovieCard.vue";
+import MoreButton from '@/components/UI/MoreButton.vue';
 
 export default {
   components: {
@@ -42,6 +56,7 @@ export default {
     SliderCard,
     FiltersBar,
     MovieCard,
+    MoreButton,
   },
   name: "home-page",
 };
@@ -58,5 +73,18 @@ export default {
     grid-auto-rows: 330px;
     gap: 30px 30px;
   }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
+
+.visited-movies {
+  padding: 0 0 60px 0;
+  .slider {
+    margin-top: 40px;
+  }
+}
+
 </style>
