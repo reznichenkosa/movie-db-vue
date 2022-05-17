@@ -1,14 +1,10 @@
 import { createStore } from 'vuex';
+import { filterModule } from './filterModule';
+import { movieModule } from './movieModule';
 
 export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    movie: movieModule,
+    filter: filterModule
   },
 });

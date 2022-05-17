@@ -2,18 +2,16 @@
   <header class="header">
     <div class="wrapper container">
       <custom-logo />
-      <custom-nav />
-      <search-input />
+      <!-- <custom-nav /> -->
     </div>
   </header>
 </template>
 
 <script>
-import CustomNav from '@/components/CustomNav.vue';
 import SearchInput from '@/components/UI/SearchInput.vue';
 import CustomLogo from '@/components/UI/CustomLogo.vue';
 export default {
-  components: { CustomLogo, CustomNav, SearchInput },
+  components: { CustomLogo, SearchInput },
   name: 'custom-header',
 };
 </script>

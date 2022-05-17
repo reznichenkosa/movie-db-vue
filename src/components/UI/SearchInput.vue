@@ -31,12 +31,12 @@ export default {
   position: relative;
 
   input {
-    width: 200px;
+    width: 300px;
     height: 40px;
-    background-color: var(--color-alt);
+    background-color: var(--color-main);
     border: none;
     border-radius: 15px;
-    padding: 0 20px 0;
+    padding: 0 40px 0 20px;
     color: #ffffff;
     font-weight: 200;
     font-size: 14px;
@@ -46,8 +46,8 @@ export default {
     }
     &:valid + label:before,
     &:focus + label:before {
-      content: attr(data-label);
-      transform: translateX(calc(-100% - 35px)) translateY(-50%);
+      opacity: 0;
+      transform: translateY(-50%) translateX(100%);
       cursor: auto;
     }
   }
