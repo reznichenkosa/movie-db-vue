@@ -66,7 +66,6 @@ export const movieModule = {
     //History
 
     setHistory(state, movie) {
-      console.log(!state.history.some(item => item.kinopoiskId === movie.kinopoiskId))
       if (!state.history.some(item => item.kinopoiskId === movie.kinopoiskId)) {
         state.history.push(movie);
         state.history = state.history.slice(-10);
@@ -89,7 +88,7 @@ export const movieModule = {
             },
           })
         const data = await response.json();
-        commit('setPremierMovies', data.films);
+        commit('setPremierMovies', data?.films?.slice(0, 10));
       } catch (error) {
         console.log(error)
       } finally {
