@@ -35,6 +35,7 @@ import SearchInput from "./UI/SearchInput.vue";
 export default {
   components: { FilterButton, FilterSelect, SearchInput },
   name: "filters-bar",
+  emits: ['changeCurrentCategory'],
   props: {
     currentCategory: {
       type: String,

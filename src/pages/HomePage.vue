@@ -3,7 +3,7 @@
     <div class="container">
       <swiper :slides-per-view="3" :space-between="50">
         <swiper-slide v-for="premierMovie in premierMovies" :key="premierMovie.filmId">
-          <slider-card :movie="premierMovie"/>
+          <slider-card :isFavorite="isFavoriteMovie(premierMovie)" @toggleFavoriteMovie="toggleFavoriteMovies(premierMovie)" :movie="premierMovie"/>
         </swiper-slide>
       </swiper>
     </div>
@@ -12,20 +12,20 @@
     <div class="container wrapper">
       <filters-bar @changeCurrentCategory="(category) => setCurrentCategory(category)" :currentCategory="currentCategory"/>
       <div class="movie-list">
-        <movie-card :isFavoriteMovie="isFavoriteMovie(movie)" @toggleFavoriteMovie="toggleFavoriteMovies(movie)" v-for="movie in moviesToShow" :key="movie.filmId" :movie="movie"/>
+        <movie-card :isFavorite="isFavoriteMovie(movie)" @toggleFavoriteMovie="toggleFavoriteMovies(movie)" v-for="movie in moviesToShow" :key="movie.filmId" :movie="movie"/>
       </div>
-      <more-button v-if="!isLastPage || moviesToShow.length !== 0" @click="loadMoreMovie()"> Показать еще</more-button>
+      <more-button v-if="isShowMoreButton" @click="loadMoreMovie()"> Показать еще</more-button>
     </div>
   </section>
-  <section class="visited-movies">
+  <section v-if="history.length !== 0" class="visited-movies">
     <div class="container">
       <h1>Вы смотрели</h1>
       <div class="slider">
-        <!-- <swiper :slides-per-view="6" :space-between="50">
-          <swiper-slide >
-            <movie-card />
+        <swiper :slides-per-view="5" :space-between="30">
+          <swiper-slide v-for="historyMovie in [...history.reverse()]" :key="historyMovie.filmId">
+            <movie-card :isFavorite="isFavoriteMovie(historyMovie)" @toggleFavoriteMovie="toggleFavoriteMovies(historyMovie)" :movie="historyMovie"/>
           </swiper-slide>
-        </swiper> -->
+        </swiper>
       </div>
     </div>
   </section>
@@ -51,6 +51,12 @@ export default {
     MoreButton,
   },
   name: "home-page",
+
+  mounted() {
+    this.fetchPremierMovies();
+    this.fetchAllMovies();
+  },
+
   methods: {
     ...mapActions({
       fetchPremierMovies: 'movie/fetchPremierMovies',
@@ -67,34 +73,34 @@ export default {
       this.fetchAllMovies();
     },
     isFavoriteMovie(movie) {
-      return this.favorite[movie.id] ? true : false;
+      return this.favoriteId.includes(movie.filmId);
     }
   },
+
   computed: {
     ...mapState({
       premierMovies: state => state.movie.premierMovies,
       allMovies: state => state.movie.allMovies,
       currentCategory: state => state.filter.currentCategory,
-      favorite: state => state.movie.favorite,
+      favoriteId: state => state.movie.favoriteId,
+      favoriteMovies: state => state.movie.favoriteMovies,
+      history: state => state.movie.history,
     }),
     ...mapGetters({
       isLastPage: 'movie/isLastPage',
     }),
     moviesToShow() {
-      if (this.currentCategory === 'FAVORITE') {
-        return Object.values(this.favorite).reverse();
-      }
-      return this.allMovies;
-    }
+      return this.currentCategory === 'FAVORITE' ? [...this.favoriteMovies].reverse() : this.allMovies;
+    },
+    isShowMoreButton() {
+      return !this.isLastPage && this.moviesToShow.length !== 0 && this.currentCategory !== 'FAVORITE'
+    },
   },
-  mounted() {
-    this.fetchPremierMovies();
-    this.fetchAllMovies();
-  },
+
   watch: {
     currentCategory() {
-      this.resetAllMoviesData();
       if (this.currentCategory !== 'FAVORITE') {
+        this.resetAllMoviesData();
         this.fetchAllMovies();
       }
     },

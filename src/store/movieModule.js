@@ -1,4 +1,4 @@
-const api_key = process.env.VUE_APP_API_KEY;
+const api_key = process.env.VUE_APP_API_KEY2;
 
 export const movieModule = {
   state: () => ({
@@ -10,7 +10,8 @@ export const movieModule = {
     allMoviePagesCount: 0,
     isAllMoviesLoading: false,
     history: [],
-    favorite: {},
+    favoriteMovies: [],
+    favoriteId: [],
   }),
   getters: {
     isLastPage(state) {
@@ -52,13 +53,25 @@ export const movieModule = {
 
     //Favorite movies
 
-    toggleFavoriteMovies(state, movies) {
-      if (state.favorite[movies.filmId]) {
-        delete state.favorite[movies.filmId];
+    toggleFavoriteMovies(state, movie) {
+      if (state.favoriteId.includes(movie.filmId)) {
+        state.favoriteMovies = state.favoriteMovies.filter(item => item.filmId !== movie.filmId);
+        state.favoriteId = state.favoriteId.filter(item => item !== movie.filmId);
       } else {
-        state.favorite[movies.filmId] = movies;
+        state.favoriteMovies.push(movie);
+        state.favoriteId.push(movie.filmId);
       }
-    }
+    },
+
+    //History
+
+    setHistory(state, movie) {
+      console.log(!state.history.some(item => item.kinopoiskId === movie.kinopoiskId))
+      if (!state.history.some(item => item.kinopoiskId === movie.kinopoiskId)) {
+        state.history.push(movie);
+        state.history = state.history.slice(-10);
+      }
+    },
   },
   actions: {
 

@@ -1,6 +1,6 @@
 <template>
   <div class="movie-card">
-    <a href="#" class="wrapper">
+    <router-link :to="{path: `/movies/${movie.filmId || movie.kinopoiskId}`}" class="wrapper">
       <img :src="movie.posterUrlPreview" :alt="movie.nameRu" />
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -17,10 +17,10 @@
           d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
         />
       </svg>
-    </a>
+    </router-link>
     <button @click="$emit('toggleFavoriteMovie', movie)" class="favorite">
       <svg
-      v-if="!isFavoriteMovie"
+        v-if="!isFavorite"
         xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
@@ -33,7 +33,7 @@
         />
       </svg>
       <svg
-      v-if="isFavoriteMovie"
+        v-if="isFavorite"
         xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
@@ -74,16 +74,17 @@
 <script>
 export default {
   name: "movie-card",
+  emits: ['toggleFavoriteMovie'],
   props: {
     movie: {
       type: Object,
       required: true,
     },
-    isFavoriteMovie: {
+    isFavorite: {
       type: Boolean,
       required: true,
-    },
-  },
+    }
+  }
 };
 </script>
 

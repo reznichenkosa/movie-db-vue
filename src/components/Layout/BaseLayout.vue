@@ -19,5 +19,6 @@ export default {
 <style>
 .main {
     flex: 1 1 auto;
+    position: relative;
 }
 </style>

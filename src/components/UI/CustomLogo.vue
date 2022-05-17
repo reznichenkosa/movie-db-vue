@@ -1,5 +1,5 @@
 <template>
-  <a href="#" class="logo">TheseAre<span>Movies</span></a>
+  <router-link :to="{path: `/`}" class="logo">TheseAre<span>Movies</span></router-link>
 </template>
 
 <script>
