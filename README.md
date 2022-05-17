@@ -1,5 +1,14 @@
 # movies-db-vue
 
+# Tech stack
+
+- vue.js
+- vuex
+- vue router
+- api
+- scss
+
+
 ## Project setup
 ```
 npm install
@@ -19,6 +28,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
