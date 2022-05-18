@@ -41,7 +41,7 @@
       <div class="slider">
         <swiper :slides-per-view="5" :space-between="30">
           <swiper-slide
-            v-for="historyMovie in [...history.reverse()]"
+            v-for="historyMovie in history"
             :key="historyMovie.filmId"
           >
             <movie-card
@@ -116,7 +116,7 @@ export default {
     }),
     moviesToShow() {
       return this.currentCategory === "FAVORITE"
-        ? [...this.favoriteMovies].reverse()
+        ? this.favoriteMovies
         : this.allMovies;
     },
     isShowMoreButton() {

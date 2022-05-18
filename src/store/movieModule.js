@@ -58,8 +58,8 @@ export const movieModule = {
         state.favoriteMovies = state.favoriteMovies.filter(item => item.filmId !== movie.filmId);
         state.favoriteId = state.favoriteId.filter(item => item !== movie.filmId);
       } else {
-        state.favoriteMovies.push(movie);
-        state.favoriteId.push(movie.filmId);
+        state.favoriteMovies.unshift(movie);
+        state.favoriteId.unshift(movie.filmId);
       }
     },
 
@@ -67,8 +67,8 @@ export const movieModule = {
 
     setHistory(state, movie) {
       if (!state.history.some(item => item.kinopoiskId === movie.kinopoiskId)) {
-        state.history.push(movie);
-        state.history = state.history.slice(-10);
+        state.history.unshift(movie);
+        state.history = state.history.slice(0, 10);
       }
     },
   },

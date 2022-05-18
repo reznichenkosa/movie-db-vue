@@ -82,6 +82,17 @@ export default {
       similarMovie: [],
     };
   },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (toParams, previousParams) => {
+        if (toParams.id && (toParams.id !== previousParams.id)) {
+          this.fetchPremierMovies(this.$route.params.id);
+          this.fetchSimilarsMovies(this.$route.params.id);
+        }
+      }
+    )
+  },
   mounted() {
     this.fetchPremierMovies(this.$route.params.id);
     this.fetchSimilarsMovies(this.$route.params.id);
@@ -137,7 +148,7 @@ export default {
         );
         const data = await response.json();
         // commit("setPremierMovies", data.films);
-        this.similarMovie = data.items;
+        this.similarMovie = data.items.slice(0, 10);
       } catch (error) {
         console.log(error);
       } finally {
