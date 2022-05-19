@@ -18,6 +18,15 @@
   <section class="all-movies">
     <div class="container wrapper">
       <filters-bar
+        :genreParams="genreParams"
+        :sortParams="sortParams"
+        :searchQuery="searchQuery"
+        :currentSortParam="currentSortParam"
+        :currentGenreParam="currentGenreParam"
+        @onSearch="onSearch"
+        @changeGenre="(genreParam) => setGenreParam(genreParam)"
+        @changeSort="(sortParam) => setSortParam(sortParam)"
+        @changeSearchInput="(newSearchQuery) => setSearchQuery(newSearchQuery)"
         @changeCurrentCategory="(category) => setCurrentCategory(category)"
         :currentCategory="currentCategory"
       />
@@ -33,6 +42,7 @@
       <more-button v-if="isShowMoreButton" @click="loadMoreMovie()">
         Показать еще
       </more-button>
+      <custom-loader v-if="isAllMoviesLoading"/>
     </div>
   </section>
   <section v-if="history.length !== 0" class="visited-movies">
@@ -65,6 +75,7 @@ import FiltersBar from "@/components/FiltersBar.vue";
 import MovieCard from "@/components/MovieCard.vue";
 import MoreButton from "@/components/UI/MoreButton.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import CustomLoader from '@/components/UI/CustomLoader.vue';
 
 export default {
   components: {
@@ -74,42 +85,70 @@ export default {
     FiltersBar,
     MovieCard,
     MoreButton,
+    CustomLoader,
   },
   name: "home-page",
 
   mounted() {
     this.fetchPremierMovies();
     this.fetchAllMovies();
+    this.fetchAllGenres();
   },
 
   methods: {
     ...mapActions({
       fetchPremierMovies: "movie/fetchPremierMovies",
       fetchAllMovies: "movie/fetchAllMovies",
+      // filter
+      fetchAllGenres: "filter/fetchAllGenres",
+      fetchMovieBySearchParams: "movie/fetchMovieBySearchParams",
     }),
     ...mapMutations({
       setCurrentCategory: "filter/setCurrentCategory",
       incCurrentAllMoviesPage: "movie/incCurrentAllMoviesPage",
       resetAllMoviesData: "movie/resetAllMoviesData",
       toggleFavoriteMovies: "movie/toggleFavoriteMovies",
+      setSearchQuery: "filter/setSearchQuery",
+      setGenreParam: "filter/setGenreParam",
+      setSortParam: "filter/setSortParam",
+      setIsSearch: "filter/setIsSearch",
     }),
     loadMoreMovie() {
-      this.incCurrentAllMoviesPage();
-      this.fetchAllMovies();
+      if (this.isSearch) {
+        this.incCurrentAllMoviesPage();
+        this.fetchMovieBySearchParams();
+      } else {
+        this.incCurrentAllMoviesPage();
+        this.fetchAllMovies();
+      }
+      
     },
     isFavoriteMovie(movie) {
       return this.favoriteId.includes(movie.filmId || movie.kinopoiskId);
     },
+    onSearch() {
+      this.setCurrentCategory('');
+      this.resetAllMoviesData();
+      this.fetchMovieBySearchParams();
+    }
   },
 
   computed: {
     ...mapState({
       premierMovies: (state) => state.movie.premierMovies,
       allMovies: (state) => state.movie.allMovies,
-      currentCategory: (state) => state.filter.currentCategory,
       favoriteId: (state) => state.movie.favoriteId,
       favoriteMovies: (state) => state.movie.favoriteMovies,
       history: (state) => state.movie.history,
+      isAllMoviesLoading: (state) => state.movie.isAllMoviesLoading,
+      // filter 
+      currentCategory: (state) => state.filter.currentCategory,
+      genreParams: (state) => state.filter.genreParams,
+      sortParams: (state) => state.filter.sortParams,
+      searchQuery: (state) => state.filter.searchQuery,
+      currentSortParam: (state) => state.filter.currentSortParam,
+      currentGenreParam: (state) => state.filter.currentGenreParam,
+      isSearch: (state) => state.filter.isSearch,
     }),
     ...mapGetters({
       isLastPage: "movie/isLastPage",
@@ -123,18 +162,37 @@ export default {
       return (
         !this.isLastPage &&
         this.moviesToShow.length !== 0 &&
-        this.currentCategory !== "FAVORITE"
+        this.currentCategory !== "FAVORITE" && 
+        !this.isAllMoviesLoading
       );
     },
   },
 
   watch: {
     currentCategory() {
-      if (this.currentCategory !== "FAVORITE") {
+      if (this.currentCategory !== "FAVORITE" && this.currentCategory !== '') {
         this.resetAllMoviesData();
         this.fetchAllMovies();
       }
+      if (this.currentCategory !== '') {
+        this.setIsSearch(false);
+        this.setSearchQuery('');
+        this.setGenreParam('');
+        this.setSortParam('');
+      }
     },
+    currentSortParam() {
+      if(this.searchQuery.length > 3) {
+        this.resetAllMoviesData();
+        this.fetchMovieBySearchParams();
+      }
+    },
+    currentGenreParam() {
+      if(this.searchQuery.length > 3) {
+        this.resetAllMoviesData();
+        this.fetchMovieBySearchParams();
+      }
+    }
   },
 };
 </script>

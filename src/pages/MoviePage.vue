@@ -6,6 +6,9 @@
         background: `url(${movie.coverUrl || require('@/assets/img/cover-default.png')}) center top/cover no-repeat`}"
     ></div>
     <div class="container">
+      <div v-if="isLoading" class="loader">
+        <custom-loader/>
+      </div>
       <div class="wrapper">
         <div class="content">
           <h2 class="title">{{ movie.nameRu }}</h2>
@@ -68,18 +71,21 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MovieCard from "@/components/MovieCard.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import CustomLoader from '@/components/UI/CustomLoader.vue';
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
     MovieCard,
+    CustomLoader,
   },
   name: "movie-page",
   data() {
     return {
       movie: {},
       similarMovie: [],
+      isLoading: true,
     };
   },
   created() {
@@ -112,25 +118,24 @@ export default {
     },
     async fetchPremierMovies(param) {
       try {
-        // commit("setIsPremierMovieLoading", true);
+        this.isLoading = true;
         const response = await fetch(
           `https://kinopoiskapiunofficial.tech/api/v2.2/films/${param}`,
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY2,
+              "X-API-KEY": process.env.VUE_APP_API_KEY,
               "Content-Type": "application/json",
             },
           }
         );
         const data = await response.json();
-        // commit("setPremierMovies", data.films);
         this.movie = data;
         this.setHistory(data);
       } catch (error) {
         console.log(error);
       } finally {
-        // commit("setIsPremierMovieLoading", false);
+        this.isLoading = false
       }
     },
     async fetchSimilarsMovies(param) {
@@ -141,7 +146,7 @@ export default {
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY2,
+              "X-API-KEY": process.env.VUE_APP_API_KEY,
               "Content-Type": "application/json",
             },
           }
@@ -194,6 +199,10 @@ export default {
     );
     pointer-events: none;
   }
+}
+
+.loader {
+  margin-top: 25%;
 }
 
 .wrapper {

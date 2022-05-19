@@ -4,7 +4,7 @@
       <div class="created">
         © TheseAreMovies, 2022. Created by Reznichenko S.
       </div>
-      <a href="#" class="link"
+      <a href="https://github.com/reznichenkosa/movie-db-vue" target="_blank" class="link"
         >
         <svg
           xmlns="http://www.w3.org/2000/svg"

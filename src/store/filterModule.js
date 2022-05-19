@@ -1,15 +1,28 @@
 export const filterModule = {
     state: () => ({
-      sortParam: '',
-      searchParam: '',
-      genreParam: '',
-      allSortParams: [
-        {all: "Все"},
-        {RATING: "По рейтингу"},
-        {YEAR: "По году"},
-        {NUM_VOTE: "По числу голосов"},
+      isSearch: false,
+      currentSortParam: '',
+      currentGenreParam: '',
+      searchQuery: '',
+      genreParams: [],
+      sortParams: [
+        {
+          value: "",
+          name: "Все",
+        },
+        {
+          value: "RATING",
+          name: "По рейтингу",
+        },
+        {
+          value: "YEAR",
+          name: "По году",
+        },
+        {
+          value: "NUM_VOTE",
+          name: "По числу голосов",
+        },
       ],
-      allGenres: [],
       currentCategory: 'TOP_100_POPULAR_FILMS',
     }),
     getters: {
@@ -20,11 +33,31 @@ export const filterModule = {
         state.currentCategory = category;
       },
       setAllGenres(state, genres) {
-          state.allGenres = genres;
+        //remove empty genres
+        const filteredGenres = genres.filter(item => item.genre !== '');
+        filteredGenres.unshift({id: "0", genre: 'Все'})
+        //first letter capital
+        state.genreParams = filteredGenres.map(item => {
+          item.id = String(item.id);
+          item.genre = item.genre[0].toUpperCase() + item.genre.slice(1);
+          return item;
+        });
+      },
+      setSearchQuery(state, newQuery) {
+        state.searchQuery = newQuery;
+      },
+      setGenreParam(state, newParam) {
+        state.currentGenreParam = newParam;
+      },
+      setSortParam(state, newParam) {
+        state.currentSortParam = newParam;
+      },
+      setIsSearch(state, bool) {
+        state.isSearch = bool;
       }
     },
     actions: {
-        async fetchBestMovies({
+        async fetchAllGenres({
             state,
             commit
           }) {
@@ -33,7 +66,7 @@ export const filterModule = {
                 'https://kinopoiskapiunofficial.tech/api/v2.2/films/filters', {
                   method: 'GET',
                   headers: {
-                    'X-API-KEY': 'd728b076-e483-4101-bdc1-36045f160f44',
+                    'X-API-KEY': process.env.VUE_APP_API_KEY,
                     'Content-Type': 'application/json',
                   },
                 });

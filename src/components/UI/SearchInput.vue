@@ -1,8 +1,8 @@
 <template>
   <div class="field">
-    <input type="text" id="search" autocomplete="off" required />
+    <input @input="$emit('changeSearchInput', $event.target.value)" :value="searchQuery" type="text" id="search" autocomplete="off" required />
     <label for="search" data-label="Поиск" data-placeholder="Я ищу..."></label>
-    <button>
+    <button @click="$emit('onSearch')">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -22,6 +22,13 @@
 <script>
 export default {
   name: "search-input",
+  emits: ['changeSearchInput', 'onSearch'],
+  props:{
+    searchQuery: {
+      type: String,
+      required: true,
+    },
+  }
 };
 </script>
 
@@ -31,7 +38,7 @@ export default {
   position: relative;
 
   input {
-    width: 300px;
+    width: 280px;
     height: 40px;
     background-color: var(--color-main);
     border: none;
@@ -47,6 +54,7 @@ export default {
     &:valid + label:before,
     &:focus + label:before {
       opacity: 0;
+      z-index: -1;
       transform: translateY(-50%) translateX(100%);
       cursor: auto;
     }
@@ -58,6 +66,7 @@ export default {
       position: absolute;
       left: 20px;
       top: 50%;
+      z-index: 0;
       transform: translateY(-50%);
       font-weight: 200;
       font-size: 14px;

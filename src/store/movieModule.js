@@ -1,4 +1,4 @@
-const api_key = process.env.VUE_APP_API_KEY2;
+const api_key = process.env.VUE_APP_API_KEY;
 
 export const movieModule = {
   state: () => ({
@@ -123,7 +123,41 @@ export const movieModule = {
       } finally {
         commit('setIsAllMovieLoading', false);
       }
-    }
+    },
+    async fetchMovieBySearchParams({
+      state,
+      commit,
+      rootState
+    }) {
+      const genreParam = rootState.filter.currentGenreParam && rootState.filter.currentGenreParam !== '0' ? '&genres=' + rootState.filter.currentGenreParam : '';
+      const sortParma = rootState.filter.currentSortParam && rootState.filter.currentSortParam !== '' ? '&order=' + rootState.filter.currentSortParam : '';
+      const searchQuery = rootState.filter.searchQuery ? encodeURI('&keyword=' + rootState.filter.searchQuery) : null;
+      const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films?type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${state.currentAllMoviesPage}${genreParam}${sortParma}${searchQuery}`;
+      try {
+        commit('setIsAllMovieLoading', true);
+        const response = await fetch( url , {
+            method: "GET",
+            headers: {
+              "X-API-KEY": api_key,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        rootState.filter.isSearch = true;
+        commit('setAllMoviePagesCount', data.totalPages);
+        if (state.currentAllMoviesPage === 1) {
+          commit('setAllMovies', data.items);
+        } else {
+          commit('addAllMovies', data.items);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        commit('setIsAllMovieLoading', false);
+      }
+    },
   },
+  
   namespaced: true,
 }

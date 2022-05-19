@@ -1,9 +1,19 @@
 <template>
   <div class="filter-bar">
     <div class="left">
-      <search-input class="mr-15" />
-      <filter-select class="mr-15" />
-      <filter-select />
+      <search-input :searchQuery="searchQuery"
+                    @changeSearchInput="(newSearchQuery) => $emit('changeSearchInput', newSearchQuery)"
+                    @onSearch="$emit('onSearch')" 
+                    class="mr-15" />
+      <filter-select selectedDefaultOption="Жанр" 
+                     :params="genreParams"
+                     :currentParam="currentGenreParam"
+                     @change="$emit('changeGenre', $event.target.value)"
+                     class="mr-15" />
+      <filter-select selectedDefaultOption="Сортировка"
+                     @change="$emit('changeSort', $event.target.value)"
+                     :currentParam="currentSortParam"
+                     :params="sortParams"/>
     </div>
     <div class="right">
       <filter-button
@@ -35,12 +45,32 @@ import SearchInput from "./UI/SearchInput.vue";
 export default {
   components: { FilterButton, FilterSelect, SearchInput },
   name: "filters-bar",
-  emits: ['changeCurrentCategory'],
+  emits: ['changeCurrentCategory', 'changeSearchInput', 'changeGenre', 'changeSort', 'onSearch'],
   props: {
     currentCategory: {
       type: String,
       required: true,
     },
+    sortParams: {
+      type: Array,
+      required: true,
+    },
+    genreParams: {
+      type: Array,
+      required: true,
+    },
+    searchQuery: {
+      type: String,
+      required: true,
+    },
+    currentSortParam: {
+      type: String,
+      required: true,
+    },
+    currentGenreParam: {
+      type: String,
+      required: true
+    }
   },
 };
 </script>
