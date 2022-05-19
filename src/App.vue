@@ -1,12 +1,15 @@
 <template>
-  <div class="">Hello</div>
+  <base-layout>
+    <router-view></router-view>
+  </base-layout>
 </template>
 
-<style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+<script>
+import BaseLayout from '@/components/Layout/BaseLayout.vue';
 
-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-}
-</style>
+export default {
+  components: {
+    BaseLayout,
+  },
+};
+</script>
