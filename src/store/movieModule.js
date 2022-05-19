@@ -9,9 +9,9 @@ export const movieModule = {
     currentAllMoviesPage: 1,
     allMoviePagesCount: 0,
     isAllMoviesLoading: false,
-    history: [],
-    favoriteMovies: [],
-    favoriteId: [],
+    history: JSON.parse(localStorage.getItem('history')) || [],
+    favoriteMovies: JSON.parse(localStorage.getItem('favoriteMovies')) || [],
+    favoriteId: JSON.parse(localStorage.getItem('favoriteId')) || [],
   }),
   getters: {
     isLastPage(state) {
@@ -54,12 +54,13 @@ export const movieModule = {
     //Favorite movies
 
     toggleFavoriteMovies(state, movie) {
-      if (state.favoriteId.includes(movie.filmId)) {
-        state.favoriteMovies = state.favoriteMovies.filter(item => item.filmId !== movie.filmId);
-        state.favoriteId = state.favoriteId.filter(item => item !== movie.filmId);
+      const newMovieId = movie.filmId || movie.kinopoiskId;
+      if (state.favoriteId.includes(newMovieId)) {
+        state.favoriteMovies = state.favoriteMovies.filter(item => (item.filmId || item.kinopoiskId) !== newMovieId);
+        state.favoriteId = state.favoriteId.filter(item => item !== newMovieId);
       } else {
         state.favoriteMovies.unshift(movie);
-        state.favoriteId.unshift(movie.filmId);
+        state.favoriteId.unshift(newMovieId);
       }
     },
 

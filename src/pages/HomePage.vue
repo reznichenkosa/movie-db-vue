@@ -98,7 +98,7 @@ export default {
       this.fetchAllMovies();
     },
     isFavoriteMovie(movie) {
-      return this.favoriteId.includes(movie.filmId);
+      return this.favoriteId.includes(movie.filmId || movie.kinopoiskId);
     },
   },
 
