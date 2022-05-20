@@ -66,7 +66,7 @@ export const filterModule = {
                 'https://kinopoiskapiunofficial.tech/api/v2.2/films/filters', {
                   method: 'GET',
                   headers: {
-                    'X-API-KEY': process.env.VUE_APP_API_KEY,
+                    'X-API-KEY': process.env.VUE_APP_API_KEY2,
                     'Content-Type': 'application/json',
                   },
                 });

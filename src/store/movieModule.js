@@ -1,4 +1,4 @@
-const api_key = process.env.VUE_APP_API_KEY;
+const api_key = process.env.VUE_APP_API_KEY2;
 
 export const movieModule = {
   state: () => ({

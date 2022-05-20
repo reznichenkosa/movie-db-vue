@@ -147,7 +147,7 @@ export default {
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY,
+              "X-API-KEY": process.env.VUE_APP_API_KEY2,
               "Content-Type": "application/json",
             },
           }
@@ -169,7 +169,7 @@ export default {
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY,
+              "X-API-KEY": process.env.VUE_APP_API_KEY2,
               "Content-Type": "application/json",
             },
           }
