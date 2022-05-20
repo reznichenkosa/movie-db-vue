@@ -1,4 +1,6 @@
 <template>
+
+        <transition name="movie-transition" appear mode="out-in">
   <div class="movie-card">
     <router-link :to="{path: `/movies/${movie.filmId || movie.kinopoiskId}`}" class="wrapper">
       <img :src="movie.posterUrlPreview || movie.posterUrl" :alt="movie.nameRu" />
@@ -69,6 +71,7 @@
       </li>
     </ul>
   </div>
+        </transition>
 </template>
 
 <script>
@@ -228,5 +231,21 @@ export default {
       }
     }
   }
+}
+.movie-transition {
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+.movie-transition-enter-active,
+.movie-transition-leave-active {
+  transition: all 0.5s ease;
+}
+.movie-transition-enter-from,
+.movie-transition-leave-to {
+  opacity: 0;
+  transform: scale(.8);
+}
+.movie-transition-move {
+    transition: all 0.5s ease;
 }
 </style>

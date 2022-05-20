@@ -35,13 +35,13 @@
         :currentCategory="currentCategory"
       />
       <div class="movie-list">
-        <movie-card
-          :isFavorite="isFavoriteMovie(movie)"
-          @toggleFavoriteMovie="toggleFavoriteMovies(movie)"
-          v-for="movie in moviesToShow"
-          :key="movie.filmId"
-          :movie="movie"
-        />
+          <movie-card
+            :isFavorite="isFavoriteMovie(movie)"
+            @toggleFavoriteMovie="toggleFavoriteMovies(movie)"
+            v-for="movie in moviesToShow"
+            :key="movie.filmId"
+            :movie="movie"
+          />
       </div>
       <more-button v-if="isShowMoreButton" @click="loadMoreMovie()">
         Показать еще
@@ -278,6 +278,8 @@ export default {
     margin-top: 40px;
   }
 }
+
+
 
 @media (max-width: 680px) {
   .all-movies {
