@@ -40,9 +40,8 @@ export default {
   color: white;
   font-weight: 400;
   cursor: pointer;
-  padding: 10px;
   border-radius: 15px;
-  padding: 0 30px 0 20px;
+  padding: 10px 30px 10px 20px;
   transition: ease 0.3s;
   -webkit-appearance: none;
   -moz-appearance: none;

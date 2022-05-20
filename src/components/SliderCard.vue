@@ -74,7 +74,8 @@ export default {
 <style scoped lang="scss">
 .slider-card {
   position: relative;
-  width: 410px;
+  max-width: 410px;
+  min-width: 230px;
   height: 350px;
   overflow: hidden;
   border-radius: 15px;

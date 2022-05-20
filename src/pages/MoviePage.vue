@@ -3,11 +3,14 @@
     <div
       class="background"
       :style="{
-        background: `url(${movie.coverUrl || require('@/assets/img/cover-default.png')}) center top/cover no-repeat`}"
+        background: `url(${
+          movie.coverUrl || require('@/assets/img/cover-default.png')
+        }) center top/cover no-repeat`,
+      }"
     ></div>
     <div class="container">
       <div v-if="isLoading" class="loader">
-        <custom-loader/>
+        <custom-loader />
       </div>
       <div class="wrapper">
         <div class="content">
@@ -53,7 +56,7 @@
     <div class="container">
       <h1>Похожие фильмы</h1>
       <div class="slider">
-        <swiper :slides-per-view="5" :space-between="30">
+        <swiper :breakpoints="breakpointsForOther" :slides-per-view="5" :space-between="30">
           <swiper-slide v-for="similar in similarMovie" :key="similar.filmId">
             <movie-card
               :isFavorite="isFavoriteMovie(similar)"
@@ -71,7 +74,7 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MovieCard from "@/components/MovieCard.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
-import CustomLoader from '@/components/UI/CustomLoader.vue';
+import CustomLoader from "@/components/UI/CustomLoader.vue";
 
 export default {
   components: {
@@ -86,18 +89,38 @@ export default {
       movie: {},
       similarMovie: [],
       isLoading: true,
+      breakpointsForOther: {
+        // when window width is >= 320px
+        300: {
+          slidesPerView: 1,
+        },
+        600: {
+          slidesPerView: 2,
+        },
+        800: {
+          slidesPerView: 3,
+        },
+        920: {
+          slidesPerView: 4,
+        },
+        // when window width is >= 480px
+        1320: {
+          slidesPerView: 5,
+          spaceBetween: 30,
+        },
+      },
     };
   },
   created() {
     this.$watch(
       () => this.$route.params,
       (toParams, previousParams) => {
-        if (toParams.id && (toParams.id !== previousParams.id)) {
+        if (toParams.id && toParams.id !== previousParams.id) {
           this.fetchPremierMovies(this.$route.params.id);
           this.fetchSimilarsMovies(this.$route.params.id);
         }
       }
-    )
+    );
   },
   mounted() {
     this.fetchPremierMovies(this.$route.params.id);
@@ -135,7 +158,7 @@ export default {
       } catch (error) {
         console.log(error);
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
     async fetchSimilarsMovies(param) {
@@ -286,6 +309,21 @@ export default {
   padding: 120px 0;
   .slider {
     margin-top: 40px;
+  }
+}
+@media (max-width: 680px) {
+  .wrapper {
+    .content {
+      .title {
+        margin-top: 30px;
+      }
+    }
+  }
+  .poster {
+    display: none;
+  }
+  .similar-movies {
+    padding: 60px 0;
   }
 }
 </style>

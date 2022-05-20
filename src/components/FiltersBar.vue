@@ -82,19 +82,38 @@ export default {
   //   z-index: 100;
   min-width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
-  padding: 0 40px;
+  padding: 15px 40px;
   background-color: var(--color-alt);
   border-radius: 15px;
 }
 .left {
   display: flex;
+  flex-wrap: wrap;
 }
 .right {
   padding: 10px;
   background-color: var(--color-main);
   border-radius: 15px;
+}
+@media (max-width: 680px) {
+  .filter-bar {
+    flex-direction: column;
+    padding: 15px;
+  }
+  .left {
+    justify-content: center;
+  }
+.right {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.mr-15 {
+  margin-right: 0;
+  margin-bottom: 20px;
+}
 }
 </style>
