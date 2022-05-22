@@ -35,13 +35,13 @@
         :currentCategory="currentCategory"
       />
       <div class="movie-list">
-          <movie-card
-            :isFavorite="isFavoriteMovie(movie)"
-            @toggleFavoriteMovie="toggleFavoriteMovies(movie)"
-            v-for="movie in moviesToShow"
-            :key="movie.filmId"
-            :movie="movie"
-          />
+        <movie-card
+          :isFavorite="isFavoriteMovie(movie)"
+          @toggleFavoriteMovie="toggleFavoriteMovies(movie)"
+          v-for="movie in moviesToShow"
+          :key="movie.filmId"
+          :movie="movie"
+        />
       </div>
       <more-button v-if="isShowMoreButton" @click="loadMoreMovie()">
         Показать еще
@@ -147,9 +147,15 @@ export default {
       },
     };
   },
+  created() {
+    this.setCurrentCategory("TOP_100_POPULAR_FILMS");
+    this.setIsSearch(false);
+    this.setSearchQuery("");
+    this.setGenreParam("");
+    this.setSortParam("");
+  },
   mounted() {
     this.fetchPremierMovies();
-    this.fetchAllMovies();
     this.fetchAllGenres();
   },
 
@@ -236,15 +242,9 @@ export default {
         this.setSearchQuery("");
         this.setGenreParam("");
         this.setSortParam("");
+        this.resetAllMoviesData();
+        this.fetchAllMovies();
       }
-    },
-    currentSortParam() {
-      this.resetAllMoviesData();
-      this.fetchMovieBySearchParams();
-    },
-    currentGenreParam() {
-      this.resetAllMoviesData();
-      this.fetchMovieBySearchParams();
     },
   },
 };
@@ -274,8 +274,6 @@ export default {
     margin-top: 40px;
   }
 }
-
-
 
 @media (max-width: 680px) {
   .all-movies {

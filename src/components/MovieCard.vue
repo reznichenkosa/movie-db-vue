@@ -1,83 +1,88 @@
 <template>
-
-        <transition name="movie-transition" appear mode="out-in">
-  <div class="movie-card">
-    <router-link :to="{path: `/movies/${movie.filmId || movie.kinopoiskId}`}" class="wrapper">
-      <img :src="movie.posterUrlPreview || movie.posterUrl" :alt="movie.nameRu" />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="50"
-        height="50"
-        fill="currentColor"
-        class="bi bi-play-circle"
-        viewBox="0 0 16 16"
+  <transition name="movie-transition" appear mode="out-in">
+    <div class="movie-card">
+      <router-link
+        :to="{ path: `/movies/${movie.filmId || movie.kinopoiskId}` }"
+        class="wrapper"
       >
-        <path
-          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+        <img
+          :src="movie.posterUrlPreview || movie.posterUrl"
+          :alt="movie.nameRu"
         />
-        <path
-          d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
-        />
-      </svg>
-    </router-link>
-    <button @click="$emit('toggleFavoriteMovie', movie)" class="favorite">
-      <svg
-        v-if="!isFavorite"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-bookmark"
-        viewBox="0 0 16 16"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="50"
+          height="50"
+          fill="currentColor"
+          class="bi bi-play-circle"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+          />
+          <path
+            d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
+          />
+        </svg>
+      </router-link>
+      <button @click="$emit('toggleFavoriteMovie', movie)" class="favorite">
+        <svg
+          v-if="!isFavorite"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-bookmark"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"
+          />
+        </svg>
+        <svg
+          v-if="isFavorite"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-bookmark-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"
+          />
+        </svg>
+      </button>
+      <span v-if="movie.rating" class="rating"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-star"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
+          /></svg
+        >{{ movie.rating || movie.ratingAwait }}</span
       >
-        <path
-          d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"
-        />
-      </svg>
-      <svg
-        v-if="isFavorite"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-bookmark-fill"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"
-        />
-      </svg>
-    </button>
-    <span v-if="movie.rating" class="rating"
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-star"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
-        /></svg
-      >{{ movie.rating || movie.ratingAwait }}</span
-    >
-    <h2 class="title">
-      <a href="#">{{ movie.nameRu }}</a>
-    </h2>
-    <ul class="tags">
-      <li v-for="genre in movie?.genres?.slice(0, 2)" :key="genre">
-        {{ genre.genre }}
-      </li>
-    </ul>
-  </div>
-        </transition>
+      <h2 class="title">
+        <a href="#">{{ movie.nameRu }}</a>
+      </h2>
+      <ul class="tags">
+        <li v-for="genre in movie?.genres?.slice(0, 2)" :key="genre">
+          {{ genre.genre }}
+        </li>
+      </ul>
+    </div>
+  </transition>
 </template>
 
 <script>
 export default {
   name: "movie-card",
-  emits: ['toggleFavoriteMovie'],
+  emits: ["toggleFavoriteMovie"],
   props: {
     movie: {
       type: Object,
@@ -86,8 +91,8 @@ export default {
     isFavorite: {
       type: Boolean,
       required: true,
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -233,8 +238,8 @@ export default {
   }
 }
 .movie-transition {
-    opacity: 0;
-    transition: all 0.5s ease;
+  opacity: 0;
+  transition: all 0.5s ease;
 }
 .movie-transition-enter-active,
 .movie-transition-leave-active {
@@ -243,9 +248,9 @@ export default {
 .movie-transition-enter-from,
 .movie-transition-leave-to {
   opacity: 0;
-  transform: scale(.8);
+  transform: scale(0.8);
 }
 .movie-transition-move {
-    transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 </style>

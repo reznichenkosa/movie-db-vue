@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/pages/HomePage';
 import MoviePage from '@/pages/MoviePage';
+import ErrorPage from '@/pages/ErrorPage';
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/movies/:id',
     name: 'movie',
     component: MoviePage,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'error',
+    component: ErrorPage,
   }
 ];
 

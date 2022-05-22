@@ -1,4 +1,5 @@
-const api_key = process.env.VUE_APP_API_KEY2;
+const api_key = process.env.VUE_APP_API_KEY;
+import router from "@/router";
 
 export const movieModule = {
   state: () => ({
@@ -91,7 +92,7 @@ export const movieModule = {
         const data = await response.json();
         commit('setPremierMovies', data?.films?.slice(0, 10));
       } catch (error) {
-        console.log(error)
+        router.push({name: 'error'});
       } finally {
         commit('setIsPremierMovieLoading', false);
       }
@@ -119,7 +120,7 @@ export const movieModule = {
           commit('addAllMovies', data.films);
         }
       } catch (error) {
-        console.log(error)
+        router.push({name: 'error'});
       } finally {
         commit('setIsAllMovieLoading', false);
       }
@@ -131,7 +132,7 @@ export const movieModule = {
     }) {
       const genreParam = rootState.filter.currentGenreParam && rootState.filter.currentGenreParam !== '0' ? '&genres=' + rootState.filter.currentGenreParam : '';
       const sortParma = rootState.filter.currentSortParam && rootState.filter.currentSortParam !== '' ? '&order=' + rootState.filter.currentSortParam : '';
-      const searchQuery = rootState.filter.searchQuery ? encodeURI('&keyword=' + rootState.filter.searchQuery) : null;
+      const searchQuery = rootState.filter.searchQuery ? encodeURI('&keyword=' + rootState.filter.searchQuery) : '';
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films?type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${state.currentAllMoviesPage}${genreParam}${sortParma}${searchQuery}`;
       try {
         commit('setIsAllMovieLoading', true);
@@ -152,7 +153,7 @@ export const movieModule = {
           commit('addAllMovies', data.items);
         }
       } catch (error) {
-        console.log(error);
+        router.push({name: 'error'});
       } finally {
         commit('setIsAllMovieLoading', false);
       }

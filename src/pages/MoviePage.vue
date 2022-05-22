@@ -12,7 +12,7 @@
       <div v-if="isLoading" class="loader">
         <custom-loader />
       </div>
-      <div class="wrapper">
+      <div v-else class="wrapper">
         <div class="content">
           <h2 class="title">{{ movie.nameRu }}</h2>
           <ul class="list">
@@ -46,7 +46,7 @@
           </ul>
           <p class="description">{{ movie.description }}</p>
         </div>
-        <div class="poster">
+        <div v-if="movie.posterUrl" class="poster">
           <img :src="movie.posterUrl" :alt="movie.nameRu" />
         </div>
       </div>
@@ -111,17 +111,6 @@ export default {
       },
     };
   },
-  created() {
-    this.$watch(
-      () => this.$route.params,
-      (toParams, previousParams) => {
-        if (toParams.id && toParams.id !== previousParams.id) {
-          this.fetchPremierMovies(this.$route.params.id);
-          this.fetchSimilarsMovies(this.$route.params.id);
-        }
-      }
-    );
-  },
   mounted() {
     this.fetchPremierMovies(this.$route.params.id);
     this.fetchSimilarsMovies(this.$route.params.id);
@@ -147,7 +136,7 @@ export default {
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY2,
+              "X-API-KEY": process.env.VUE_APP_API_KEY,
               "Content-Type": "application/json",
             },
           }
@@ -169,18 +158,17 @@ export default {
           {
             method: "GET",
             headers: {
-              "X-API-KEY": process.env.VUE_APP_API_KEY2,
+              "X-API-KEY": process.env.VUE_APP_API_KEY,
               "Content-Type": "application/json",
             },
           }
         );
         const data = await response.json();
-        // commit("setPremierMovies", data.films);
         this.similarMovie = data.items.slice(0, 10);
       } catch (error) {
         console.log(error);
+        this.$router.push({name: 'error'})
       } finally {
-        // commit("setIsPremierMovieLoading", false);
       }
     },
     formatFilmLength(filmLength) {
@@ -222,10 +210,6 @@ export default {
     );
     pointer-events: none;
   }
-}
-
-.loader {
-  margin-top: 25%;
 }
 
 .wrapper {
@@ -310,6 +294,10 @@ export default {
   .slider {
     margin-top: 40px;
   }
+}
+
+.loader {
+  margin-top: 20%;
 }
 @media (max-width: 680px) {
   .wrapper {

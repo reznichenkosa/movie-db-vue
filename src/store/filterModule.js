@@ -1,3 +1,5 @@
+import router from "@/router";
+
 export const filterModule = {
     state: () => ({
       isSearch: false,
@@ -23,7 +25,7 @@ export const filterModule = {
           name: "По числу голосов",
         },
       ],
-      currentCategory: 'TOP_100_POPULAR_FILMS',
+      currentCategory: '',
     }),
     getters: {
   
@@ -66,14 +68,14 @@ export const filterModule = {
                 'https://kinopoiskapiunofficial.tech/api/v2.2/films/filters', {
                   method: 'GET',
                   headers: {
-                    'X-API-KEY': process.env.VUE_APP_API_KEY2,
+                    'X-API-KEY': process.env.VUE_APP_API_KEY,
                     'Content-Type': 'application/json',
                   },
                 });
               const data = await response.json();
               commit('setAllGenres', data.genres);
             } catch (error) {
-              console.log(error)
+              router.push({name: 'error'});
             } finally {
             }
           },
