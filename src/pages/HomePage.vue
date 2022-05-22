@@ -239,13 +239,13 @@ export default {
       }
     },
     currentSortParam() {
-      if (this.searchQuery.length > 3) {
+      if (this.searchQuery?.length > 3) {
         this.resetAllMoviesData();
         this.fetchMovieBySearchParams();
       }
     },
     currentGenreParam() {
-      if (this.searchQuery.length > 3) {
+      if (this.searchQuery?.length > 3) {
         this.resetAllMoviesData();
         this.fetchMovieBySearchParams();
       }
